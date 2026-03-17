@@ -1,34 +1,298 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Morpheus">
-<link rel="apple-touch-icon" href="icon.png">
 <title>Morpheus 🌀</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:#0a0a0a; color:white; font-family:-apple-system,sans-serif;
-       display:flex; align-items:center; justify-content:center;
-       height:100vh; flex-direction:column; gap:20px; }
-.emoji { font-size:72px; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
-p { color:#666; font-size:15px; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  background: #0a0a0a;
+  color: white;
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.logo { font-size: 72px; margin-bottom: 8px; animation: float 3s ease-in-out infinite; }
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.subtitle { color: #555; font-size: 14px; margin-bottom: 48px; }
+
+/* Login screen */
+#login { width: 100%; max-width: 360px; }
+
+.member-btn {
+  width: 100%;
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: left;
+}
+.member-btn:active { transform: scale(0.97); background: #1f1f1f; }
+.member-emoji { font-size: 32px; }
+.member-info { flex: 1; }
+.member-name { font-size: 17px; font-weight: 600; }
+.member-role { font-size: 12px; color: #555; margin-top: 2px; }
+.arrow { color: #333; font-size: 18px; }
+
+/* PIN screen */
+#pin-screen { width: 100%; max-width: 360px; display: none; text-align: center; }
+.pin-member { font-size: 48px; margin-bottom: 8px; }
+.pin-name { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.pin-label { color: #555; font-size: 14px; margin-bottom: 32px; }
+
+.pin-dots { display: flex; gap: 16px; justify-content: center; margin-bottom: 40px; }
+.dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #2a2a2a;
+  transition: background 0.15s;
+}
+.dot.filled { background: white; }
+
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.num-btn {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 20px;
+  font-size: 24px;
+  font-weight: 300;
+  color: white;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70px;
+}
+.num-btn:active { background: #2a2a2a; transform: scale(0.95); }
+.num-btn .letters { font-size: 10px; color: #444; margin-top: 3px; letter-spacing: 1px; }
+.num-btn.del { font-size: 20px; }
+.num-btn.empty { background: transparent; border-color: transparent; cursor: default; }
+
+.back-btn {
+  margin-top: 28px;
+  color: #555;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* Connecting screen */
+#connecting { display: none; text-align: center; }
+.spin { font-size: 64px; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Error */
+.error-msg {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: -20px;
+  margin-bottom: 24px;
+  height: 20px;
+}
+
+/* No PIN (kids) */
+.no-pin-note { color: #555; font-size: 13px; margin-top: 32px; text-align: center; }
 </style>
 </head>
 <body>
-<div class="emoji">🌀</div>
-<p>Connecting to Morpheus...</p>
+
+<div class="logo">🌀</div>
+<h1>Morpheus</h1>
+<p class="subtitle">Your AI family assistant</p>
+
+<!-- Member selection -->
+<div id="login">
+  <div class="member-btn" onclick="selectMember('nathan','659a5fbe732180a4fe9d8d6d6b4ebf2e','👑','Nathan','Admin',true)">
+    <span class="member-emoji">👑</span>
+    <div class="member-info">
+      <div class="member-name">Nathan</div>
+      <div class="member-role">Admin</div>
+    </div>
+    <span class="arrow">›</span>
+  </div>
+  <div class="member-btn" onclick="selectMember('weiqi','dd348dc16003956c79d2ba5d11dcc914','🌸','Wei Qi 韦琪','Family',true)">
+    <span class="member-emoji">🌸</span>
+    <div class="member-info">
+      <div class="member-name">Wei Qi 韦琪</div>
+      <div class="member-role">Family</div>
+    </div>
+    <span class="arrow">›</span>
+  </div>
+  <div class="member-btn" onclick="selectMember('lucky','7aafeeb218f2792476f04dadd4568848','🎓','Lucky','Kid — Age 11',false)">
+    <span class="member-emoji">🎓</span>
+    <div class="member-info">
+      <div class="member-name">Lucky</div>
+      <div class="member-role">Kid — Age 11</div>
+    </div>
+    <span class="arrow">›</span>
+  </div>
+  <div class="member-btn" onclick="selectMember('seven','99dabcf23506bbb03d0c9836e084858f','🧸','Seven','Kid — Age 3',false)">
+    <span class="member-emoji">🧸</span>
+    <div class="member-info">
+      <div class="member-name">Seven</div>
+      <div class="member-role">Kid — Age 3</div>
+    </div>
+    <span class="arrow">›</span>
+  </div>
+  <p class="no-pin-note">Each member has their own private conversation with Morpheus</p>
+</div>
+
+<!-- PIN entry (for Nathan & Wei Qi) -->
+<div id="pin-screen">
+  <div class="pin-member" id="pin-emoji"></div>
+  <div class="pin-name" id="pin-name"></div>
+  <div class="pin-label" id="pin-label">Enter your 4-digit PIN</div>
+  <div class="error-msg" id="error-msg"></div>
+  <div class="pin-dots">
+    <div class="dot" id="d0"></div>
+    <div class="dot" id="d1"></div>
+    <div class="dot" id="d2"></div>
+    <div class="dot" id="d3"></div>
+  </div>
+  <div class="numpad">
+    <button class="num-btn" onclick="addPin('1')">1</button>
+    <button class="num-btn" onclick="addPin('2')">2<div class="letters">ABC</div></button>
+    <button class="num-btn" onclick="addPin('3')">3<div class="letters">DEF</div></button>
+    <button class="num-btn" onclick="addPin('4')">4<div class="letters">GHI</div></button>
+    <button class="num-btn" onclick="addPin('5')">5<div class="letters">JKL</div></button>
+    <button class="num-btn" onclick="addPin('6')">6<div class="letters">MNO</div></button>
+    <button class="num-btn" onclick="addPin('7')">7<div class="letters">PQRS</div></button>
+    <button class="num-btn" onclick="addPin('8')">8<div class="letters">TUV</div></button>
+    <button class="num-btn" onclick="addPin('9')">9<div class="letters">WXYZ</div></button>
+    <button class="num-btn empty"></button>
+    <button class="num-btn" onclick="addPin('0')">0</button>
+    <button class="num-btn del" onclick="delPin()">⌫</button>
+  </div>
+  <div class="back-btn" onclick="goBack()">← Choose a different member</div>
+</div>
+
+<!-- Connecting -->
+<div id="connecting">
+  <div class="spin">🌀</div>
+  <p style="color:#555;margin-top:16px">Connecting...</p>
+</div>
+
 <script>
-const TOKEN = 'd5f6782a2d14c0d9a2672c62a616f5ea3546fb44bc8e0c6e';
 const GATEWAY = 'https://rutilated-nonphonetically-rochel.ngrok-free.dev';
-localStorage.setItem('openclaw_token', TOKEN);
-localStorage.setItem('gatewayToken', TOKEN);
-setTimeout(() => {
-  window.location.replace(GATEWAY + '/#token=' + TOKEN);
-}, 800);
+
+// PINs (hashed ideally, but kept simple for now — can upgrade later)
+// Default PIN for Nathan & Wei Qi: 1234 (they should change this!)
+const PINS = { nathan: '1234', weiqi: '1234' };
+
+let currentMember = null;
+let currentToken = null;
+let pinEntry = '';
+let requirePin = false;
+
+// Check if already logged in
+window.onload = () => {
+  const saved = localStorage.getItem('morpheus_member');
+  const token = localStorage.getItem('morpheus_token');
+  if (saved && token) {
+    connect(token, saved);
+  }
+};
+
+function selectMember(id, token, emoji, name, role, needPin) {
+  currentMember = { id, token, emoji, name, role };
+  currentToken = token;
+  requirePin = needPin;
+
+  if (!needPin) {
+    // Kids — go straight in
+    connect(token, id);
+    return;
+  }
+
+  // Show PIN screen
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('pin-emoji').textContent = emoji;
+  document.getElementById('pin-name').textContent = name;
+  pinEntry = '';
+  updateDots();
+}
+
+function addPin(digit) {
+  if (pinEntry.length >= 4) return;
+  pinEntry += digit;
+  updateDots();
+  if (pinEntry.length === 4) checkPin();
+}
+
+function delPin() {
+  pinEntry = pinEntry.slice(0, -1);
+  updateDots();
+  document.getElementById('error-msg').textContent = '';
+}
+
+function updateDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('d' + i).classList.toggle('filled', i < pinEntry.length);
+  }
+}
+
+function checkPin() {
+  const expected = PINS[currentMember.id];
+  if (pinEntry === expected) {
+    connect(currentToken, currentMember.id);
+  } else {
+    document.getElementById('error-msg').textContent = 'Wrong PIN — try again';
+    pinEntry = '';
+    setTimeout(() => updateDots(), 100);
+    // Shake animation
+    document.querySelector('.pin-dots').style.animation = 'none';
+    setTimeout(() => { document.querySelector('.pin-dots').style.animation = ''; }, 10);
+  }
+}
+
+function connect(token, memberId) {
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('pin-screen').style.display = 'none';
+  document.getElementById('connecting').style.display = 'block';
+
+  localStorage.setItem('morpheus_token', token);
+  localStorage.setItem('gatewayToken', token);
+  localStorage.setItem('morpheus_member', memberId);
+
+  setTimeout(() => {
+    window.location.replace(GATEWAY + '/#token=' + token);
+  }, 600);
+}
+
+function goBack() {
+  document.getElementById('pin-screen').style.display = 'none';
+  document.getElementById('login').style.display = 'block';
+  pinEntry = '';
+  document.getElementById('error-msg').textContent = '';
+}
 </script>
 </body>
 </html>
