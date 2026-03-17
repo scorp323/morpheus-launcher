@@ -9,63 +9,47 @@
 <title>Morpheus 🌀</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body {
-  background:#0a0a0a; color:white;
-  font-family:-apple-system,'SF Pro Display',sans-serif;
-  min-height:100vh; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; padding:24px;
-}
+body { background:#0a0a0a; color:white; font-family:-apple-system,'SF Pro Display',sans-serif;
+  min-height:100vh; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; padding:24px; }
 .logo { font-size:72px; margin-bottom:8px; animation:float 3s ease-in-out infinite; }
 @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 h1 { font-size:28px; font-weight:700; margin-bottom:4px; }
-.subtitle { color:#555; font-size:14px; margin-bottom:16px; }
-
-/* Live status bar */
-.status-bar {
-  display:flex; align-items:center; gap:8px;
-  background:#111; border:1px solid #222; border-radius:20px;
-  padding:6px 14px; margin-bottom:36px; font-size:13px; color:#888;
-}
-.status-dot { width:8px; height:8px; border-radius:50%; background:#10b981; animation:pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
-.status-dot.offline { background:#ef4444; animation:none; }
-.status-dot.checking { background:#f59e0b; }
-
+.subtitle { color:#555; font-size:14px; margin-bottom:12px; }
+.online { display:flex; align-items:center; gap:8px; margin-bottom:36px;
+  font-size:13px; color:#10b981; }
+.dot { width:8px; height:8px; border-radius:50%; background:#10b981;
+  animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 #login { width:100%; max-width:360px; }
-.member-btn {
-  width:100%; background:#161616; border:1px solid #2a2a2a; border-radius:16px;
+.btn { width:100%; background:#161616; border:1px solid #2a2a2a; border-radius:16px;
   padding:18px 20px; margin-bottom:12px; display:flex; align-items:center;
-  gap:16px; cursor:pointer; transition:all 0.2s; color:white;
-}
-.member-btn:active { transform:scale(0.97); background:#1f1f1f; }
-.member-emoji { font-size:32px; }
-.member-info { flex:1; }
-.member-name { font-size:17px; font-weight:600; }
-.member-role { font-size:12px; color:#555; margin-top:2px; }
-.arrow { color:#333; font-size:18px; }
-
-#pin-screen { width:100%; max-width:360px; display:none; text-align:center; }
-.pin-member { font-size:48px; margin-bottom:8px; }
-.pin-name { font-size:22px; font-weight:700; margin-bottom:6px; }
-.pin-label { color:#555; font-size:14px; margin-bottom:32px; }
-.error-msg { color:#ef4444; font-size:14px; margin-top:-20px; margin-bottom:24px; height:20px; }
-.pin-dots { display:flex; gap:16px; justify-content:center; margin-bottom:40px; }
-.dot { width:16px; height:16px; border-radius:50%; background:#2a2a2a; transition:background 0.15s; }
-.dot.filled { background:white; }
-.numpad { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-.num-btn {
-  background:#161616; border:1px solid #2a2a2a; border-radius:14px;
-  padding:20px; font-size:24px; font-weight:300; color:white;
-  cursor:pointer; transition:all 0.15s; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; min-height:70px;
-}
-.num-btn:active { background:#2a2a2a; transform:scale(0.95); }
-.num-btn .letters { font-size:10px; color:#444; margin-top:3px; letter-spacing:1px; }
-.num-btn.del { font-size:20px; }
-.num-btn.empty { background:transparent; border-color:transparent; cursor:default; }
-.back-btn { margin-top:28px; color:#555; font-size:15px; cursor:pointer; padding:8px; }
-
-#connecting { display:none; text-align:center; }
+  gap:16px; cursor:pointer; transition:all 0.15s; color:white; }
+.btn:active { transform:scale(0.97); background:#1f1f1f; }
+.e { font-size:32px; }
+.info { flex:1; }
+.name { font-size:17px; font-weight:600; }
+.role { font-size:12px; color:#555; margin-top:2px; }
+.arr { color:#333; font-size:20px; }
+#pin { width:100%; max-width:360px; display:none; text-align:center; }
+.pe { font-size:48px; margin-bottom:8px; }
+.pn { font-size:22px; font-weight:700; margin-bottom:6px; }
+.pl { color:#555; font-size:14px; margin-bottom:32px; }
+.err { color:#ef4444; font-size:14px; height:20px; margin-bottom:16px; }
+.dots { display:flex; gap:16px; justify-content:center; margin-bottom:40px; }
+.d { width:16px; height:16px; border-radius:50%; background:#2a2a2a; transition:background 0.15s; }
+.d.f { background:white; }
+.pad { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.k { background:#161616; border:1px solid #2a2a2a; border-radius:14px;
+  padding:20px; font-size:24px; font-weight:300; color:white; cursor:pointer;
+  transition:all 0.15s; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; min-height:70px; }
+.k:active { background:#2a2a2a; transform:scale(0.95); }
+.k .l { font-size:10px; color:#444; margin-top:3px; letter-spacing:1px; }
+.k.del { font-size:20px; }
+.k.empty { background:transparent; border-color:transparent; cursor:default; }
+.back { margin-top:28px; color:#555; font-size:15px; cursor:pointer; padding:8px; }
+#conn { display:none; text-align:center; }
 .spin { font-size:64px; animation:spin 1s linear infinite; }
 @keyframes spin { to{transform:rotate(360deg)} }
 </style>
@@ -75,145 +59,87 @@ h1 { font-size:28px; font-weight:700; margin-bottom:4px; }
 <div class="logo">🌀</div>
 <h1>Morpheus</h1>
 <p class="subtitle">Your AI family assistant</p>
-
-<div class="status-bar">
-  <div class="status-dot" id="status-dot"></div>
-  <span id="status-text">Checking connection...</span>
-</div>
+<div class="online"><div class="dot"></div><span>Online</span></div>
 
 <div id="login">
-  <div class="member-btn" onclick="selectMember('nathan','morpheus-family-2026-secure','👑','Nathan','Admin',true)">
-    <span class="member-emoji">👑</span>
-    <div class="member-info"><div class="member-name">Nathan</div><div class="member-role">Admin</div></div>
-    <span class="arrow">›</span>
+  <div class="btn" onclick="sel('nathan','👑','Nathan','Admin',true)">
+    <span class="e">👑</span><div class="info"><div class="name">Nathan</div><div class="role">Admin</div></div><span class="arr">›</span>
   </div>
-  <div class="member-btn" onclick="selectMember('weiqi','morpheus-family-2026-secure','🌸','Wei Qi 韦琪','Family',true)">
-    <span class="member-emoji">🌸</span>
-    <div class="member-info"><div class="member-name">Wei Qi 韦琪</div><div class="member-role">Family</div></div>
-    <span class="arrow">›</span>
+  <div class="btn" onclick="sel('weiqi','🌸','Wei Qi 韦琪','Family',true)">
+    <span class="e">🌸</span><div class="info"><div class="name">Wei Qi 韦琪</div><div class="role">Family</div></div><span class="arr">›</span>
   </div>
-  <div class="member-btn" onclick="selectMember('lucky','morpheus-family-2026-secure','🎓','Lucky','Kid — Age 11',false)">
-    <span class="member-emoji">🎓</span>
-    <div class="member-info"><div class="member-name">Lucky</div><div class="member-role">Kid — Age 11</div></div>
-    <span class="arrow">›</span>
+  <div class="btn" onclick="sel('lucky','🎓','Lucky','Kid — Age 11',false)">
+    <span class="e">🎓</span><div class="info"><div class="name">Lucky</div><div class="role">Kid — Age 11</div></div><span class="arr">›</span>
   </div>
-  <div class="member-btn" onclick="selectMember('seven','morpheus-family-2026-secure','🧸','Seven','Kid — Age 3',false)">
-    <span class="member-emoji">🧸</span>
-    <div class="member-info"><div class="member-name">Seven</div><div class="member-role">Kid — Age 3</div></div>
-    <span class="arrow">›</span>
+  <div class="btn" onclick="sel('seven','🧸','Seven','Kid — Age 3',false)">
+    <span class="e">🧸</span><div class="info"><div class="name">Seven</div><div class="role">Kid — Age 3</div></div><span class="arr">›</span>
   </div>
 </div>
 
-<div id="pin-screen">
-  <div class="pin-member" id="pin-emoji"></div>
-  <div class="pin-name" id="pin-name"></div>
-  <div class="pin-label">Enter your 4-digit PIN</div>
-  <div class="error-msg" id="error-msg"></div>
-  <div class="pin-dots">
-    <div class="dot" id="d0"></div><div class="dot" id="d1"></div>
-    <div class="dot" id="d2"></div><div class="dot" id="d3"></div>
+<div id="pin">
+  <div class="pe" id="pe"></div>
+  <div class="pn" id="pn"></div>
+  <div class="pl">Enter your 4-digit PIN</div>
+  <div class="err" id="err"></div>
+  <div class="dots"><div class="d" id="d0"></div><div class="d" id="d1"></div><div class="d" id="d2"></div><div class="d" id="d3"></div></div>
+  <div class="pad">
+    <button class="k" onclick="add('1')">1</button>
+    <button class="k" onclick="add('2')">2<div class="l">ABC</div></button>
+    <button class="k" onclick="add('3')">3<div class="l">DEF</div></button>
+    <button class="k" onclick="add('4')">4<div class="l">GHI</div></button>
+    <button class="k" onclick="add('5')">5<div class="l">JKL</div></button>
+    <button class="k" onclick="add('6')">6<div class="l">MNO</div></button>
+    <button class="k" onclick="add('7')">7<div class="l">PQRS</div></button>
+    <button class="k" onclick="add('8')">8<div class="l">TUV</div></button>
+    <button class="k" onclick="add('9')">9<div class="l">WXYZ</div></button>
+    <button class="k empty"></button>
+    <button class="k" onclick="add('0')">0</button>
+    <button class="k del" onclick="del()">⌫</button>
   </div>
-  <div class="numpad">
-    <button class="num-btn" onclick="addPin('1')">1</button>
-    <button class="num-btn" onclick="addPin('2')">2<div class="letters">ABC</div></button>
-    <button class="num-btn" onclick="addPin('3')">3<div class="letters">DEF</div></button>
-    <button class="num-btn" onclick="addPin('4')">4<div class="letters">GHI</div></button>
-    <button class="num-btn" onclick="addPin('5')">5<div class="letters">JKL</div></button>
-    <button class="num-btn" onclick="addPin('6')">6<div class="letters">MNO</div></button>
-    <button class="num-btn" onclick="addPin('7')">7<div class="letters">PQRS</div></button>
-    <button class="num-btn" onclick="addPin('8')">8<div class="letters">TUV</div></button>
-    <button class="num-btn" onclick="addPin('9')">9<div class="letters">WXYZ</div></button>
-    <button class="num-btn empty"></button>
-    <button class="num-btn" onclick="addPin('0')">0</button>
-    <button class="num-btn del" onclick="delPin()">⌫</button>
-  </div>
-  <div class="back-btn" onclick="goBack()">← Back</div>
+  <div class="back" onclick="back()">← Back</div>
 </div>
 
-<div id="connecting">
-  <div class="spin">🌀</div>
-  <p style="color:#666;margin-top:16px">Connecting...</p>
-</div>
+<div id="conn"><div class="spin">🌀</div><p style="color:#666;margin-top:16px">Connecting...</p></div>
 
 <script>
-// Try Tailscale first (most reliable), fall back to ngrok
-const GATEWAYS = [
-  'http://100.101.96.64:18789',
-  'https://rutilated-nonphonetically-rochel.ngrok-free.dev'
-];
+const GW = 'https://rutilated-nonphonetically-rochel.ngrok-free.dev';
 const TOKEN = 'morpheus-family-2026-secure';
-const PINS = { nathan: '0908', weiqi: '1234' };
+const PINS = { nathan:'0908', weiqi:'1234' };
+let cur=null, pin='';
 
-let activeGateway = localStorage.getItem('morpheus_gateway') || GATEWAYS[0];
-let currentMember = null;
-let pinEntry = '';
-
-// Check which gateway is reachable
-async function checkGateways() {
-  const dot = document.getElementById('status-dot');
-  const txt = document.getElementById('status-text');
-  dot.className = 'status-dot checking';
-  txt.textContent = 'Checking connection...';
-
-  for (const gw of GATEWAYS) {
-    try {
-      const res = await fetch(gw + '/health', {
-        signal: AbortSignal.timeout(4000),
-        headers: {'ngrok-skip-browser-warning': 'true'}
-      });
-      if (res.ok) {
-        activeGateway = gw;
-        localStorage.setItem('morpheus_gateway', gw);
-        dot.className = 'status-dot';
-        const label = gw.includes('100.101') ? 'Morpheus Online — Local' : 'Morpheus Online — Remote';
-        txt.textContent = label;
-        return;
-      }
-    } catch(e) {}
-  }
-  dot.className = 'status-dot offline';
-  txt.textContent = 'Offline — check Mac is on';
-}
-
-checkGateways();
-setInterval(checkGateways, 30000); // recheck every 30s
-
-function selectMember(id, token, emoji, name, role, needPin) {
-  currentMember = { id, token, emoji, name, role };
-  if (!needPin) { connect(token, id); return; }
-  document.getElementById('login').style.display = 'none';
-  document.getElementById('pin-screen').style.display = 'block';
-  document.getElementById('pin-emoji').textContent = emoji;
-  document.getElementById('pin-name').textContent = name;
-  pinEntry = '';
-  updateDots();
-}
-
-function addPin(d) {
-  if (pinEntry.length >= 4) return;
-  pinEntry += d;
-  updateDots();
-  if (pinEntry.length === 4) checkPin();
-}
-function delPin() { pinEntry = pinEntry.slice(0,-1); updateDots(); document.getElementById('error-msg').textContent=''; }
-function updateDots() { for(let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('filled',i<pinEntry.length); }
-function checkPin() {
-  if (pinEntry === PINS[currentMember.id]) { connect(currentMember.token, currentMember.id); }
-  else { document.getElementById('error-msg').textContent='Wrong PIN — try again'; pinEntry=''; setTimeout(updateDots,100); }
-}
-function connect(token, memberId) {
+function sel(id, emoji, name, role, needPin) {
+  cur = {id, emoji, name, role};
+  if (!needPin) { go(); return; }
   document.getElementById('login').style.display='none';
-  document.getElementById('pin-screen').style.display='none';
-  document.getElementById('connecting').style.display='block';
-  localStorage.setItem('morpheus_token', token);
-  localStorage.setItem('gatewayToken', token);
-  localStorage.setItem('morpheus_member', memberId);
-  setTimeout(() => { window.location.replace(activeGateway + '/#token=' + token); }, 500);
+  document.getElementById('pin').style.display='block';
+  document.getElementById('pe').textContent=emoji;
+  document.getElementById('pn').textContent=name;
+  pin=''; dots();
 }
-function goBack() {
-  document.getElementById('pin-screen').style.display='none';
+function add(d) {
+  if(pin.length>=4) return;
+  pin+=d; dots();
+  if(pin.length===4) check();
+}
+function del() { pin=pin.slice(0,-1); dots(); document.getElementById('err').textContent=''; }
+function dots() { for(let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('f',i<pin.length); }
+function check() {
+  if(pin===PINS[cur.id]) { go(); }
+  else { document.getElementById('err').textContent='Wrong PIN — try again'; pin=''; setTimeout(dots,100); }
+}
+function go() {
+  document.getElementById('login').style.display='none';
+  document.getElementById('pin').style.display='none';
+  document.getElementById('conn').style.display='block';
+  localStorage.setItem('morpheus_token', TOKEN);
+  localStorage.setItem('gatewayToken', TOKEN);
+  localStorage.setItem('morpheus_member', cur.id);
+  setTimeout(()=>{ window.location.replace(GW+'/#token='+TOKEN); }, 600);
+}
+function back() {
+  document.getElementById('pin').style.display='none';
   document.getElementById('login').style.display='block';
-  pinEntry=''; document.getElementById('error-msg').textContent='';
+  pin=''; document.getElementById('err').textContent='';
 }
 </script>
 </body>
