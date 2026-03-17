@@ -129,7 +129,7 @@ h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
 
 <!-- Member selection -->
 <div id="login">
-  <div class="member-btn" onclick="selectMember('nathan','659a5fbe732180a4fe9d8d6d6b4ebf2e','👑','Nathan','Admin',true)">
+  <div class="member-btn" onclick="selectMember('nathan','d5f6782a2d14c0d9a2672c62a616f5ea3546fb44bc8e0c6e','👑','Nathan','Admin',true)">
     <span class="member-emoji">👑</span>
     <div class="member-info">
       <div class="member-name">Nathan</div>
@@ -137,7 +137,7 @@ h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
     </div>
     <span class="arrow">›</span>
   </div>
-  <div class="member-btn" onclick="selectMember('weiqi','dd348dc16003956c79d2ba5d11dcc914','🌸','Wei Qi 韦琪','Family',true)">
+  <div class="member-btn" onclick="selectMember('weiqi','d5f6782a2d14c0d9a2672c62a616f5ea3546fb44bc8e0c6e','🌸','Wei Qi 韦琪','Family',true)">
     <span class="member-emoji">🌸</span>
     <div class="member-info">
       <div class="member-name">Wei Qi 韦琪</div>
@@ -145,7 +145,7 @@ h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
     </div>
     <span class="arrow">›</span>
   </div>
-  <div class="member-btn" onclick="selectMember('lucky','7aafeeb218f2792476f04dadd4568848','🎓','Lucky','Kid — Age 11',false)">
+  <div class="member-btn" onclick="selectMember('lucky','d5f6782a2d14c0d9a2672c62a616f5ea3546fb44bc8e0c6e','🎓','Lucky','Kid — Age 11',false)">
     <span class="member-emoji">🎓</span>
     <div class="member-info">
       <div class="member-name">Lucky</div>
@@ -153,7 +153,7 @@ h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
     </div>
     <span class="arrow">›</span>
   </div>
-  <div class="member-btn" onclick="selectMember('seven','99dabcf23506bbb03d0c9836e084858f','🧸','Seven','Kid — Age 3',false)">
+  <div class="member-btn" onclick="selectMember('seven','d5f6782a2d14c0d9a2672c62a616f5ea3546fb44bc8e0c6e','🧸','Seven','Kid — Age 3',false)">
     <span class="member-emoji">🧸</span>
     <div class="member-info">
       <div class="member-name">Seven</div>
@@ -296,3 +296,18 @@ function goBack() {
 </script>
 </body>
 </html>
+<script>
+// Override connect to send identity greeting
+const _origConnect = connect;
+window.connect = function(token, memberId) {
+  const greetings = {
+    nathan: null, // Nathan doesn't need a greeting, I always know him
+    weiqi: '【系统提示：这是韦琪登录，请用中文回复，称呼她为韦琪】',
+    lucky: '【System: Lucky (age 11) is logged in. Keep responses kid-friendly and helpful for school】',
+    seven: '【System: Seven (age 3) is logged in. Use very simple words, be warm and playful】'
+  };
+  localStorage.setItem('morpheus_member', memberId);
+  localStorage.setItem('morpheus_greeting', greetings[memberId] || '');
+  _origConnect(token, memberId);
+};
+</script>
